@@ -213,8 +213,27 @@ class MinimaxPlayer(IsolationPlayer):
             raise SearchTimeout()
 
         # TODO: finish this function!
+        max_value(self, game, -1)
+
         raise NotImplementedError
 
+    def max_value(self, game, level):
+        value = float("-inf")
+        level+=1
+        if(level == self.search_depth):
+            return self.score()
+        for board in game.get_legal_moves():
+            value = max(value, min_value(self, game, level))
+        return value
+
+    def min_value(self, game, level):
+        value = float("inf")
+        level+=1
+        if (level == self.search_depth):
+            return self.score()
+        for board in game.get_legal_moves():
+            value = min(value, max_value(self, game, level))
+        return value
 
 class AlphaBetaPlayer(IsolationPlayer):
     """Game-playing agent that chooses a move using iterative deepening minimax
