@@ -3,6 +3,7 @@ test your agent's strength against a set of known agents using tournament.py
 and include the results in your report.
 """
 import random
+import math
 
 
 class SearchTimeout(Exception):
@@ -34,9 +35,18 @@ def custom_score(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
-    raise NotImplementedError
+    if game.is_loser(player):
+        return float("-inf")
 
+    if game.is_winner(player):
+        return float("inf")
+
+    numOfMoveActivePlayer = len(game.get_legal_moves(player))
+    numOfMoveInActivePlayer = len(game.get_legal_moves(game.get_opponent(player)))
+    difference = float(numOfMoveActivePlayer - numOfMoveInActivePlayer)
+    if(numOfMoveInActivePlayer == 0):
+        return float("inf")
+    return difference/numOfMoveInActivePlayer
 
 def custom_score_2(game, player):
     """Calculate the heuristic value of a game state from the point of view
@@ -60,9 +70,16 @@ def custom_score_2(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
-    raise NotImplementedError
+    if game.is_loser(player):
+        return float("-inf")
 
+    if game.is_winner(player):
+        return float("inf")
+
+    numOfMoveActivePlayer = len(game.get_legal_moves(player))
+    numOfMoveInActivePlayer = len(game.get_legal_moves(game.get_opponent(player)))
+
+    return float(numOfMoveActivePlayer - 4 * numOfMoveInActivePlayer)
 
 def custom_score_3(game, player):
     """Calculate the heuristic value of a game state from the point of view
@@ -86,8 +103,16 @@ def custom_score_3(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
-    raise NotImplementedError
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    numOfMoveActivePlayer = len(game.get_legal_moves(player))
+    blankSpaces = len(game.get_blank_spaces())
+
+    return float(numOfMoveActivePlayer / blankSpaces)
 
 
 class IsolationPlayer:
